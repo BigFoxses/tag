@@ -512,6 +512,7 @@ typedef NS_ENUM(int, CommandCode) {
             if(colors != nil) {
                 NSNumber *colorId = [colors objectForKey: tag];
                 long color = [colorId longValue];
+//                NSLog(@"color =%ld", color);
                 switch(color) {
                     case 0:
                         color1 = COLORS_NONE;
@@ -563,8 +564,10 @@ typedef NS_ENUM(int, CommandCode) {
 - (NSMutableSet*)tagSetFromTagArray:(NSArray*)tagArray
 {
     NSMutableSet* set = [[NSMutableSet alloc] initWithCapacity:[tagArray count]];
-    for (NSString* tag in tagArray)
+    for (NSString* tag in tagArray){
+    //    NSLog(@"tag value =%@", tag);
         [set addObject:[[TagName alloc] initWithTag:tag]];
+    }
     return set;
 }
 
@@ -694,6 +697,7 @@ typedef NS_ENUM(int, CommandCode) {
         
         // Form the union of the existing tags + new tags.
         NSMutableSet* tagSet = [self tagSetFromTagArray:existingTags];
+        
         [tagSet unionSet:self.tags];
         
         // Set all the new tags onto the item
@@ -788,7 +792,7 @@ typedef NS_ENUM(int, CommandCode) {
     NSArray *tagsArray = [prop valueForKeyPath:@"values.FinderTagDict.value.FinderTags"];
     NSUInteger tagCount = [tagsArray count];
     
-    NSMutableDictionary *colors = [NSMutableDictionary dictionaryWithCapacity: 10];
+    NSMutableDictionary *colors = [NSMutableDictionary dictionaryWithCapacity: 50];
     
     for(int i=0;i<tagCount;i++) {
         NSDictionary *dictionary = tagsArray[i];
@@ -814,6 +818,8 @@ typedef NS_ENUM(int, CommandCode) {
             [self reportFatalError:error onURL:URL];
         
         
+    //    for (NSString* tag in tagArray){
+    //        NSLog(@"tag value =%@", tag);}
         // Emit
         [self emitURL:URL tags:tagArray colors: self.tagColors];
          
@@ -870,7 +876,7 @@ typedef NS_ENUM(int, CommandCode) {
     if ([self.URLs count])
         [result addObjectsFromArray:self.URLs];
     
-    // Add any specified search scopes
+    //ƒ Add any specified search scopes
     switch (scope)
     {
         case SearchScopeNone:
